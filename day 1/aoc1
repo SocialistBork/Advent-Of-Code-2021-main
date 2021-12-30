@@ -1,0 +1,8 @@
+f = open("list.txt", "r")
+inc = 0
+dec = 0
+
+previous = f.readline()
+print(previous)
+while previous:
+  
