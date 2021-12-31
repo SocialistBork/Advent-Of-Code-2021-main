@@ -46,10 +46,35 @@ def ifLow(i, j):
                 return True
     return False
 
+rows, cols = (yBound, xBound)
+emptyCopy=[]
+for i in range(yBound):
+    col = []
+    for j in range(xBound):
+        if data[i][j] == "9":
+            col.append(".")
+        else:
+            col.append("")
+    emptyCopy.append(col)
+
 for i in range(yBound):
     str = data[i]
     for j in range(len(str)):
         if ifLow(i,j):
-            lowPoints.append(int(data[i][j]))
+            lowPoints.append(f'{i}'+","+f'{j}')
 
-print(sum(lowPoints)+len(lowPoints))
+def findBasinSize(i,j):
+    if i < 0 or i > yBound-1 or j < 0 or j > xBound - 1:
+        return 0
+    if (emptyCopy[i][j]) == ".":
+        return 0
+    emptyCopy[i][j] = "."
+    return findBasinSize(i-1,j)+findBasinSize(i+1,j)+findBasinSize(i,j-1)+findBasinSize(i,j+1) + 1
+
+basin = []
+for point in lowPoints:
+    y = int(point[0:point.find(",")])
+    x = int(point[point.find(",")+1: len(point)])
+    basin.append(findBasinSize(y,x))
+
+print(sorted(basin)[::-1])
